@@ -1,0 +1,725 @@
+Default value: FILE_READING_INTERVAL = 30 second and FILE_ALRARM_RAISE_INTERVAL = 90 
+
+
+
+
+[MAIN]
+DCS_IS_IGNORE_CL = 0
+
+[PARAMETERS]
+# ----------------------------------------------------------------------------------
+# 1 means ignore the first record coming on a new socket, which should be an header. default
+# 0 means don't ignore any record, since all records contain data.
+# ----------------------------------------------------------------------------------
+;IGNORE_HDR=0
+
+# ----------------------------------------------------------
+# The Probe type (can be NMG, TELESOFT or AGILENT) in capital letters.
+# ----------------------------------------------------------
+;PROBE_TYPE = AGILENT
+;PROBE_TYPE = TEKELEC
+;PROBE_TYPE = NMG
+;PROBE_TYPE = POLYSTAR
+;PROBE_TYPE = DA
+;PROBE_TYPE = SH_PROBE
+;PROBE_TYPE = SH_FILE_PROBE
+;PROBE_TYPE = IPNEDR 
+
+# JMS Broker ip:port
+;PROBE_JMS_BROKER
+
+# MPI input topic name
+#default DA_TO_MPI_TOPIC
+;PROBE_JMS_TOPIC
+
+# MPI input queue name
+#default DA_TO_MPI_QUEUE
+;PROBE_JMS_QUEUE
+
+;-----------------------------------------------------------
+;                         DA PARAMETERS
+;-----------------------------------------------------------
+;PROBE_JMS_BROKER = 10.10.10.216:61618
+;PROBE_JMS_TOPIC = DA_TO_MPI_TOPIC
+
+;-----------------------------------------------------------
+;                         SH_PROBE PARAMETERS
+;-----------------------------------------------------------
+;PROBE_JMS_BROKER = 10.10.10.216:61618
+;PROBE_JMS_QUEUE = DA_TO_MPI_QUEUE
+
+
+# ----------------------------------------------------------
+# The address & ports numbers of the Telesoft Probe.
+# ----------------------------------------------------------
+;PROBE_ADDRESS
+#default 30001
+;TDR_PORT
+#default 30002
+;TRAP_PORT
+
+# ----------------------------------------------------------
+# The maximum number of connections attempts before closing the socket (Telesoft).
+#Default 3
+# ----------------------------------------------------------
+;MAX_CONNECT_ATTEMPTS
+
+# ----------------------------------------------------------
+# Sending heartbeat requests (Telesoft).
+#Default 0
+# ----------------------------------------------------------
+;SEND_HEARTBEAT_REQ
+
+# ----------------------------------------------------------
+# Time between heartbeat request messages (Telesoft).
+#Default 10
+# ----------------------------------------------------------
+;HEARTBEAT_REQ_INTERVAL
+
+# ----------------------------------------------------------
+# Maximum interval allowed between heartbeat response messages (Telesoft).
+#Default 30
+# ----------------------------------------------------------
+;HEARTBEAT_RES_TIMEOUT
+
+# ----------------------------------------------------------
+# Timeout heartbeat response messages (Telesoft).
+#Default 10
+# ----------------------------------------------------------
+;HEARTBEAT_REQ_TIMEOUT
+
+# For telesoft - Default 0
+;PROCESS_TELESOFT_TRAPS 
+
+# ----------------------------------------------------------
+# The minimum number of connections required .
+#Default 2
+# ----------------------------------------------------------
+;MIN_REQ_CONNECT
+
+
+# ----------------------------------------------------------
+# The network protocol type (GSM or CDMA) - Default GSM
+# ----------------------------------------------------------
+;NETWORK_PROTOCOL
+
+# -------------------------------------------------------------------------
+# Number of threads to activate. Each thread opens one socket to the Probe.
+# This is relevant only for AGILENT (max is 2).
+# -------------------------------------------------------------------------
+;NUM_OF_PORTS = 2
+
+# ------------------------------------------------
+# The port number for each thread that is defined.
+# ------------------------------------------------
+PORT_0 = 23000
+PORT_1 = 23001
+
+# ---------------------------------------------------------------------
+# The type of the Update Location message (relevant only for Agilent)
+# Default - MODE_10_PARAMS
+# ---------------------------------------------------------------------
+#UL_MSG_TYPE=MODE_4_PARAMS
+
+# ---------------------------------------------------------------------
+# Is the 'Cancel Location' message is  enabled or disabled  (relevant only for Agilent)
+# Default - 0
+# ---------------------------------------------------------------------
+#CL_ENABLED=
+
+#TEKELEC Information: Maximum allowed number of error/warning events.
+# Default - 0
+;HANDLE_TEKELEC_EVENTS=0
+
+# Default - 3
+;MAX_ERROR_EVENTS
+
+# Default - 10
+;MAX_WARNING_EVENTS
+
+# Default - 0
+;IS_SUPPORT_FIXED_MSCID
+
+# Default - ""
+;FIXED_MSCID
+
+# ---------------------------------------------------------------------
+# Enable / Disable probe acking mode (answer per TDR) 
+# (currently relevant only for 'Telogic' probe)
+# Default - 0
+# ---------------------------------------------------------------------
+;PROBE_ACK
+
+# ---------------------------------------------------------------------
+# Currently only for TELESOFT: 
+# Determine whether to align the decoded CAMEL-PHASE value into standard format.
+# Default: 0 No CAMEL-PHASE value alignement.
+# ---------------------------------------------------------------------
+;IS_ALIGN_CAMEL_PHASE_VAL
+
+# ---------------------------------------------------------------------
+# Currently only for TELESOFT: 
+# Determine whether to align the barring val to "-1"
+# if barring value doesn't exist in the transaction instead of "0"
+# Default: 0 No Barring value alignement, if missing in transaction value is "0"
+# ---------------------------------------------------------------------
+;IS_ALIGN_BARRING_VAL           
+
+
+
+# ---------------------------------------------------------------------
+# whether to convert Service key to "" 
+# instead of "-1" if not exist in UL/ISD msgs
+# Default: 0 - No convertion, if missing in transaction value is "-1"	
+# ---------------------------------------------------------------------
+;IS_CONVERT_SK_VAL              
+
+# ---------------------------------------------------------------------
+# whether to use APN to ServiceKey map. If enabled, then upon receiving APN in UL message,
+# mpi will try to find ServiceKey by APN in the map, which defined in APN_SK section.
+# Default: 0 - don't use APN to ServiceKey map
+# ---------------------------------------------------------------------
+;IS_APN_SK_MAP=0
+
+# ---------------------------------------------------------------------
+# number of APN to SK mappings
+# Default: 0
+# ---------------------------------------------------------------------
+;NUM_OF_APNS=3
+
+# ---------------------------------------------------------------------
+# APN_SK section
+# the number of entries must be equal to NUM_OF_APNS
+# each entry shall be in format: APN_<index>=APN,SK
+# ---------------------------------------------------------------------
+;[APN_SK]
+;APN_0=INTERNET.TUENTI.MX,600
+;APN_1=INTERNET.MAZTIEMPO.MX,601
+;APN_2=INTERNET.CIERTO.MX,602
+
+# ---------------------------------------------------------------------
+# Currently only for TELESOFT: 
+# Determine according to which SccpData format to decode (ITU/Ansi)
+# 1-ITU, 2-ANSI
+# Default 1
+# ---------------------------------------------------------------------
+;SCCP_DATA_DECODING_FORMAT
+
+# Default - StarHomeCap
+;PROBE_CAP_SESSION_NAME
+
+# Default - StarHomeGprs
+;PROBE_GPRS_SESSION_NAME
+
+# ---------------------------------------------------------------------
+# For TELESOFT only: Is Sgsn Number with NOA or not 
+# (in new TLS HW version Sgsn number is with NOA)
+# Default: 1
+# ---------------------------------------------------------------------
+;TLS_IS_SGSN_NUM_WITH_NOA
+ 
+   
+# ---------------------------------------------------------------------
+# For TELESOFT only: 
+# Whether sequence number in Telesoft header message is large (4 bytes) or only 1
+# Default: 0
+# ---------------------------------------------------------------------
+;TLS_IS_LARGE_HEADER_SEQ_NUM
+
+
+# ---------------------------------------------------------------------
+# For TELESOFT only: trap message bitmask 
+# Default - all messages are enabled. 511
+# ---------------------------------------------------------------------
+;TLS_TRAP_MSG_BITMASK
+
+
+# ---------------------------------------------------------------------
+# whether to convert camel phase to "" 
+# instead of "-1" if not exist in UL/ISD msgs
+# Default: 0 - No convertion, if missing in transaction value is "-1"
+# ---------------------------------------------------------------------
+;IS_CONVERT_CAMEL_PHASE_VAL        
+
+# ---------------------------------------------------------------------
+# Indicate what to do with Purge TDR whose Type GSM or GPRS is not decisive. 
+# "Dismiss", "GPRS" or "GSM"
+# Default - Dismiss
+# ---------------------------------------------------------------------
+;HANDLE_INDECISIVE_PURGE_TDR_TYPE
+
+# ---------------------------------------------------------------------
+# The separator (delimiter) character indication within received transaction 
+# (currently relevant only for 'Telogic' probe)
+# Default - ,
+# ---------------------------------------------------------------------
+;RECORD_SEPARATOR
+
+
+# ---------------
+# SMPX parameters 
+# ---------------
+;SMPX_TAG_NUM = 1010
+;SMPX_TRACE_FLAG = 0
+
+#----------------
+#IPNEDR parameters
+#--------------
+# Separator for MAP files
+# Default is ';'
+;IPNEDR_MAP_SEPARATOR=;
+
+# Empty value for MAP files
+# Default is '""'
+;IPNEDR_MAP_EMPTY_VALUE=""
+
+
+;-----------------------------------------------------------
+;                        POLYSTAR PARAMETERS
+;-----------------------------------------------------------
+;IP_PORT = 7777
+;READ_TIMEOUT = 120
+;PARSER_MODE = MAP
+
+
+#-----------------------------------------------------------
+#                         DCS PARAMETERS
+#-----------------------------------------------------------
+# Parses datacast Variable section
+;DCS_IS_PARSE_VARIABLE_SECTION=1
+# DCS get the call type from parameter 'Call Type' in datacast Fixed section
+;DCS_IS_GET_OP_CODE_FROM_CALL_TYPE=1
+# DCS write the data cast parst data into output dirctory 'DataCast'
+# Each message writes to file 'datacast_parsr_<index>.txt
+;DCS_WRITE_TO_FILE = 1
+# Get parameters from DCS variable section according of data-ID
+;DCS_PARAM_FROM_DATA_ID=1
+
+# DCS_DATA_ID=<data-id><order><param-name>;<data-id><order><param-name>;
+# DCS_DATA_ID default parameters is:
+#1,1,AC_MAP_VERSION,2,1,IMSI,2,2,VLR,3,1,MSC_NUMBER,4,1,MSISDN,5,1,VLR_CAMEL,6,1,SUPPORT_CAMEL_PHASES,7,1,IMSI,7,1,PARAM_TYPE_LMSI,8,1,PARAM_TYPE_SCCP_CALLING
+# The Param-name optional is:
+#	AC_MAP_VERSION, IMSI, VLR, MSC, MSISDN, SUPPORT_CAMEL_PHASES, LMSI, SCCP_CALLING, VLR_CAMEL, HLR, TCAP_ERROR, MAP_ERROR, SERVICE_KEY, SGSN
+#For Add 'DATA-ID' parameters write new <data-id><order><param-name>;
+#For Change 'DATA-ID' write the same <data-id> and <order>
+#in example: HLR change AC_MAP_VERSION default, and SERVICE_KEY set when data-id=6 , and order = 2;
+;DCS_DATA_ID = 1,1,HLR;6,2,SERVICE_KEY;6,3,MAP_ERROR;7,1,SGSN;
+
+# Get parameters from whether variable section or fixed section
+;DCS_PARAM_FROM_DYNAMIC_SRC=1
+
+# DCS_DYNAMIC_DATA=<msg_type>,<param_type>,<is_from_var_section>,<ignore_bytes>,<data_id>,<order>
+# msg type may be CL,UL,etc.
+# param types: AC_MAP_VERSION, IMSI, VLR, MSC, MSISDN, SUPPORT_CAMEL_PHASES, LMSI, SCCP_CALLING, VLR_CAMEL, HLR, TCAP_ERROR, MAP_ERROR, SERVICE_KEY, SGSN
+# if param from variable section, then has to be provided data id and order
+# in example defined data:
+# msg_type = UL (update location), param_type = IMSI, is_from_var_section = 1, ignore_bytes = 0, data_id = 13, order = 1; 
+# msg_type = CL (cancel location), param_type = VLR, is_from_var_section = 0, ignore_bytes = 2
+;DCS_DYNAMIC_DATA=UL,IMSI,1,0,13,1;CL,VLR,0,2
+
+# -----------------------------------------
+# Maximum interval allowed between messages -
+# -----------------------------------------
+;MSG_INTERVAL = 998
+#was 10 changed by Edy during integration, ~!!~ changed from 10000, which is not valid
+
+# -------------------------------------------------------------------
+# Maximum number of invalid messages, after that the socket is closed
+# Not Valid for Telesoft - Default 3
+# -------------------------------------------------------------------
+;MAX_INVALID_MSGS = 3
+
+# -------------------------------------------------------------------
+# Set default for SEMA Probe
+# If the percent of invalid format message from THRESHOLD_FRAME
+# is equal or bigger than the THRESHOLD_INVALID_MSGS and reconnect.
+# -------------------------------------------------------------------
+#default 10
+;THRESHOLD_INVALID_MSGS   
+#default 100
+;THRESHOLD_FRAME   
+#default 0
+;IS_MSG_PER_SOCKET    
+
+
+# ----------------------
+# LNX_TEKELEC parameters 
+# ----------------------
+# relevant for LNX_TEKELEC probe only
+# separator for MAP file
+# default ","
+;LNX_TEKELEC_MAP_SEPARATOR = ,
+
+# relevant for LNX_TEKELEC probe only
+# separator for PDP file
+# default is ";"
+;LNX_TEKELEC_PDP_SEPARATOR = ;
+
+# relevant for LNX_TEKELEC probe only
+# empty value for MAP file
+# default "-"
+;LNX_TEKELEC_MAP_EMPTY_VALUE = -
+
+# relevant for LNX_TEKELEC probe only
+# empty value for PDP file
+# default "-"
+;LNX_TEKELEC_PDP_EMPTY_VALUE = -
+
+# Number of the directoreis the PI will put files to.
+# ---------------------------------------------------
+#NUM_OF_WORK_DIR=1
+
+# Full path of the file directory, if only one defined.
+# -----------------------------------------------------
+# WORK_DIR_0= c:\TEST\output
+
+
+# ----------------------------------------------------------------
+# These parameters must be same in the Probe and PI configuration
+# Value of these parameters is taked from the Probe configuration: 
+# ----------------------------------------------------------------
+#--------------------------------------------
+# PI listener port for connection with Probe.
+# Default 9094
+# -------------------------------------------
+#PROBE_PORT_NUMBER=23000
+
+# -------------------------------------------------
+# This paremeter used for sync Probe functionality. 
+# Default 500
+# -------------------------------------------------
+;PROBE_BUFFER_COUNT=500
+# ---------------------------------------------
+# Size of the buffer that Probe use per second. 
+# Default 20480
+# ---------------------------------------------
+;PROBE_BUFFER_SIZE=20480
+# ------------------------------------------------------------------
+# This psrsmeter used if the we have more then one session.
+# Session may be MAP/ISUP/... in our case we have only one Session,
+# therefore this parameter must be set to 0.
+# Default 0 
+# -----------------------------------------------------------------
+;PROBE_SESSION_DELAY=0
+
+# --------------------------------------------------------------
+# Name of the Session that must be configured in the Probe and 
+# PI will receive the Session with this name also.
+# Default StarHome 
+# --------------------------------------------------------------
+;PROBE_SESSION_NAME=StarHome
+
+# ---------------------------------------------------------------------
+# The following 2 parameters define when the File Generator will close
+# the file: according to Time or file size (who occured first).
+# ---------------------------------------------------------------------
+FILE_TIMEOUT=33
+
+# Number of the Records the queue will keep.
+# ------------------------------------------
+NUM_QUEUE_RECORDS=10000
+# -----------------------------------
+# Number of the records in the Block.
+# -----------------------------------
+NUM_RECORDS_PER_BLOCK=100
+
+# Time in sec the MPI wait for rais alarm about empty blocks.
+# Default - 60
+# -----------------------------------------------------------
+NO_RECORDS_TIMEOUT=120
+
+# Whether the MPI will work in Test mode.
+# If 0 LIVE   MODE
+#    1 TEST   MODE For QA Set prefixes to all parameters.
+#    2 SCREEN MODE prind on the screen all Probe events.
+# -------------------------------------------------------
+MAX_NUM_IP_QUEUE_RECORDS=1000
+
+WORKING_MODE=2
+
+# after how time close the file if no new transactions - in seconds
+# Default - 15
+# -----------------------------------------------------------
+;FILE_TIMEOUT
+
+
+# Max sequince number of the file name the FG will create.
+# Default - 99999
+# -----------------------------------------------------------
+;MAX_FILE_COUNT
+
+# max number of file errors before MPI is down.
+# Default - 99999
+# -----------------------------------------------------------
+;MAX_FILE_ERR_COUNT
+
+# ------------------------
+# FILTERING
+# ------------------------
+#mode for general filter parameters-all filter accecpt PDP_CAUSE(Prefix/Suffix)
+#TDR_FILTER_MODE=Prefix
+
+#BLACK_WHITE_LIST for general filter parameters-all filter accecpt PDP_CAUSE (0-black,1-white)
+#TDR_FILTER_BLACK_WHITE_LIST=0
+
+#mode for PDP_CAUSE filter(Prefix/Suffix) 
+#TDR_FILTER_PDP_CAUSE_MODE=Prefix
+
+#BLACK_WHITE_LIST for PDP_CAUSE filter(0-black,1-white)
+#TDR_FILTER_PDP_CAUSE_BLACK_WHITE_LIST=1
+
+#param type for all filters(0-NO_FILTER,1-HLR_FILTER,2-VLR_FILTER,4-IMSI_FILTER,8-SCCP_CALLED_GT_FILTER,16-MAP_ERR_FILTER,
+#32-OPCODE_FILTER,64-PDP_CAUSE_FILTER,128-SCCP_CALLING_GT_FILTER,256-SGSN_NUMBER_FILTER,512-RESULT_CODE_FILTER
+#1024-EXPERIMENTAL_RESULT_CODE_FILTER,2048-ERROR_DIAGNOSTIC_FILTER,4096-ORIGIN_REALM_FILTER,8192-DESTINATION_REALM_FILTER
+#16384-VISITED_PMN_ID_FILTER)IMSI+PDP=64+4
+#TDR_FILTER_PARAM_TYPE=68
+
+#message type for all filters(0-NONE_MSG,1-UPL_MSG,2-ISD_MSG,4-CNL_MSG,8-DEL_MSG,16-PRG_MSG,32-CNL_GPRS_MSG,64-PRG_GPRS_MSG,128-PRN_MSG,256-CALL_MSG,
+#512-IP_MSG,1024-UPL_GPRS_MSG,2048-UPL_BEGIN_MSG,4096-UPL_GPRS_BEGIN_MSG,8192-INAP_CAP_MSG,16384-PDP_CONTEXT_CREATED_MSG,
+#16777216 - UPL_LTE_MSG,33554432 - CNL_LTE_MSG)UL+PDP=1+16384
+#TDR_FILTER_MESSAGES_TYPE=16385
+#TDR_FILTER_IMSI_LIST=12,20815,647145645
+#TDR_FILTER_RESULT_CODE_LIST=
+#TDR_FILTER_EXPERIMENTAL_RESULT_CODE_LIST=
+#TDR_FILTER_ERROR_DIAGNOSTIC_LIST=
+#TDR_FILTER_ORIGIN_REALM_LIST=
+#TDR_FILTER_DESTINATION_REALM_LIST=
+#TDR_FILTER_VISITED_PMN_ID_LIST=
+#TDR_FILTER_MAP_ERR_LIST=
+
+
+# Basic Modules Alarm parameters.
+
+#whether the MPI hadle the BM alarm - Default - 1
+;HANDLE_CONNECT_ALARM
+
+#after how time we raise alarm. - Default - 4
+;CONNECT_ALARM_COUNT
+
+#timeout interval in whitch we check the alarm. - Default - 15
+;CONNECT_ALARM_TIMEOUT
+
+#time interval that defined when we can drop the raised alarm. - Default - 60
+;CONNECT_DROP_ALARM_TIMEOUT
+
+#number of the Basic MOdules we monitoring. - Default - 4
+;NUM_BASIC_MODULE
+
+#time interval after that the MPI will reset the raised count. - Default - 300
+;CONNECT_RESET_ALARM_TIMEOUT
+
+
+
+# Load balance :
+#   in File and IP mode balance by KEY (IMSI or MSISDN)
+#   in ACTIVE MQ sends 2 LSB of KEY as JMS Group 
+#----------------------------------------------------------
+;LOAD_BALANCE_KEY=IMSI
+;LOAD_BALANCE_NUM_TARGETS
+
+#----------------------------------------------------------
+# Whether or not MPI can talk to clients using IP, in addition/instead of using files
+# Currently only one IP client is supported!
+#----------------------------------------------------------
+# Default 0
+;IS_USE_IP=0
+#-----------------   ACTIVE MQ Setting
+# Default 0
+;IS_USE_AMQ=1
+
+# Default 0 (this parameter is obsolete, and used for backward compatibility. the new parameter is configured per workdir.)
+;NUM_OF_BROKERS=1
+
+# Default 1000
+;BROKER_RECONNECT_TO_MSEC
+
+[BROKERS]
+#Format BROKER_IP_+Num=IP:Port
+#BROKER_IP_0=
+
+[WORK_DIR_0]
+
+#WORKING_MODE
+
+#----------------------------------------------------------
+#OUTPUT_TYPE can be
+# 1. FILE_DIRECTORY
+# 2. IP_CLIENT
+# 3. AMQ_CLIENT
+#----------------------------------------------------------
+;OUTPUT_TYPE
+
+
+#Default - ALL
+;TDR_PARAMETERS
+
+#----------------------------------------------------------
+# This parameter defines whether to remove the parameters names 
+#(i.e. "MSISDN=", "TIME=", etc.) from the output TDR or not.
+# Default - 0 - Do not omit parameters name.
+#----------------------------------------------------------
+;OMIT_PARAMETERS_NAMES
+
+#----------------------------------------------------------
+# This parameter defines whether to filter (i.e. do not generate output TDR) 
+# current transaction in case that one of the parameters is empty.
+# Default - 0 - Do not filter TDRs.
+#----------------------------------------------------------
+;FILTER_WHEN_MISSING_INFO
+
+#----------------------------------------------------------
+# This parameter define whether to use the "TDR_PARAMETERS" ini-parameter
+# as format for the output TDR.
+# Default - 0 - Do not use.
+#----------------------------------------------------------
+;USE_TDR_PARAMETERS_AS_FORMAT
+
+#----------------------------------------------------------
+# Relevant for AMQ only
+# according to current implementation,
+# IG2 expects from MPI to be produces with destination topic "mpiInTopic"
+# Default OUT_QUEUE_NAME - mpiInTopic
+# Default IS_OUT_TOPIC - 1
+#----------------------------------------------------------
+;IS_OUT_TOPIC
+;OUT_QUEUE_NAME
+;LOAD_BALANCE_MODULUS
+
+
+#----------------------------------------------------------
+# Relevant for Files
+# according to current implementation
+# Default NUM_RECORDS_PER_FILE - 10
+# Default CLOSE_TIME_PER_FILE - 0
+#----------------------------------------------------------
+;DIR_NAME=d:\output_cap
+;INTERMEDIATE_DIR
+;NUM_RECORDS_PER_FILE
+;CLOSE_TIME_PER_FILE
+;LOAD_BALANCE_MODULUS
+
+#----------------------------------------------------------
+# Relevant for IP
+# according to current implementation
+#----------------------------------------------------------
+;LOAD_BALANCE_MODULUS
+;MAX_NUM_IP_QUEUE_RECORDS
+;QUEUE_PERCENT_REMOVE
+;IS_DELETE_NEW
+
+;INTERESTS=UL,ISD,CNL,PRN,CNL_GPRS,PRG,PRG_GPRS,DEL,ALL,UPL_GPRS,UPL_BEGIN,UPL_GPRS_BEGIN
+;INAP_CAP,PDP_CONTEXT_CREATED,PDP_CONTEXT_DELETED,MO_FSM,MT_FSM,SRI_4_SM
+;ISUP_IAM,ISUP_SAM,ISUP_ACM,ISUP_ANM,ISUP_CON,ISUP_REL,ISUP_ALL_MESSAGES
+;UPL_LTE,CNL_LTE,DSD,PUSSD,SAI,RESTORE_DATA,PUSSR,PURGE_MS,PSI
+;CAM_IDP,CAM_RRB,CAM_ERB,CAM_CUE,CAM_CONNECT,CAM_AC,CAM_ACR,CAM_FCI,CAM_RELEASE
+
+INTERESTS=UL,CNL
+NUM_RECORDS_PER_FILE=1
+#
+# TOPIC OR QUEUE - Default TOPIC in ActiveMQ
+#
+IS_OUT_TOPIC=1
+
+# OUT_QUEUE_NAME
+# Name of the QUEUE in broker
+#----------------------------------------
+;OUT_QUEUE_NAME=mpiInTopic
+
+#MESSAGE_LIVE_TIME
+#  In msec time for message to be valid for AMQ 
+# After that time message will be deleted in the broker
+#------------------------------------------------------------
+MESSAGE_LIVE_TIME=20000
+
+# SIZE_OF_TDR_SET
+# Used in throttling mechanism.
+# Defines number of records to be processed per 100 msec 
+# Default value = 10. Namely, the processing rate = 100 records per 1 second. 
+#------------------------------------------------------------
+SIZE_OF_TDR_SET=10
+
+# THROTTLING_ENABLED
+# Enable/disable throttling mechanis.
+# Enable = 1, disable = 0
+# Default = 0.
+#------------------------------------------------------------
+THROTTLING_ENABLED=0
+
+# THROTTLING_DEFENSE_STRATEGY
+# Used in throttling mechanism.
+# In case throttling mechanis is activated what shall be done :
+#    1) delete TDR files 
+#    2) send alarm
+#    3) both
+# Default value - empty (do not perform any action) 
+# Values 
+#    1) delete
+#    2) alarm
+#    3) delete,alarm
+#------------------------------------------------------------
+THROTTLING_DEFENSE_STRATEGY=
+
+# MAX_FILES_IN_INPUT_DIR
+# Used in throttling mechanism.
+# Defines the maximum allowed amount of TDR files in input directory . 
+# If THROTTLING_DEFENSE_STRATEGY set to "delete" and number of files in input 
+# directory more than MAX_FILES_IN_INPUT_DIR the only last newest file will be 
+# processed , other will be deleted.
+#------------------------------------------------------------
+MAX_FILES_IN_INPUT_DIR=10
+
+# TCAP_ERROR_CODE_IGNORE_LIST
+# Defines TCAP error codes to be treated as positive result.
+# The value shall be represented in decimal format.
+# Value range : 0 - 255 
+# Default value = ""
+#------------------------------------------------------------
+TCAP_ERROR_CODE_IGNORE_LIST=
+
+# Take the time from the probe or form the local platform (computer).
+# Value range : 0 - 1  (boolean) 
+# Default value = 0 
+#------------------------------------------------------------
+IS_SET_LOCAL_TIME=0
+
+# Convert the TDR time into local time zone (default) or to GMT.
+# Value range : 0 - 1  (boolean) 
+# Default value = 0 
+#------------------------------------------------------------
+CONVERT_TDR_TIME_TO_GMT=0
+
+
+# The timeout in sec before reestablshing connection to the probe. 
+# The reconnection is done as result of disconnect made by the probe.
+# Value range : 0 - 600  (int) 
+# Default value = 0 
+#------------------------------------------------------------
+CONNECTION_REESTABLISH_TIME_OUT_SEC=0
+
+#------------------------------------------------------------
+# AMQ Settings for Multi JMS
+
+# this is name that represents the current WORK_DIR. It will be used in alarms text 
+# when an alarm which is related to the current WORK_DIR is raised or dropped.\
+# default: the section name of the WORK_DIR, e.g. WORK_DIR_0 in this case.
+;GATE_NAME=
+
+# Number of brokers per WORK_DIR. Default is -1 (not in use)
+;NUM_OF_BROKERS=1
+
+# IP and port of broker(s). 
+# the number of IP,port shall be configured according to NUM_OF_BROKERS. i.e: BROKER_IP_0, BROKER_IP_1, ..., BROKER_IP_<NUM_OF_BROKERS-1> 
+# format of the parameter: <IP>:<Port>. E.g. 127.0.0.1:61616
+;BROKER_IP_0=
+
+[INPUT_DIR]
+# relevant for LNX_TEKELEC probe only
+# MAP file prefix
+# Default value = "ULCL"
+MAP_FILE_NAME_PREFIX=ULCL
+
+# relevant for LNX_TEKELEC probe only
+# PDP file prefix
+# Default value = "GPRS"
+PDP_FILE_NAME_PREFIX=GPRS
+

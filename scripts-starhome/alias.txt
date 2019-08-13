@@ -1,0 +1,4 @@
+alias p="ps -ef |grep"
+alias n="netstat -nap |grep"
+alias data="cd /starhome/igate/   /data"
+alias logs="cd /starhome/igate/   /logs"

@@ -1,0 +1,31 @@
+#!/bin/bash
+list=`cat /etc/hosts | grep -v localhost |grep -v ora |grep -v \# |awk '{print$2}'`
+
+if [ "$EUID" != "0" ] && [ "$OSTYPE" == "linux-gnu" ];then
+        for i in $list
+        do
+                        /usr/bin/ssh $i "uname -n; tail -1 /etc/issue; dmidecode | grep DL;echo "Number of CPUs:" ;less /proc/cpuinfo|grep 'core id' |sort |uniq |wc -l; less /proc/meminfo|head -7 ;echo "Last day CPU avg:";sar |head -3 |tail -1 ; sar |tail -1 " > $i"_"$(date +%Y%m%d)".support_log"
+
+                /usr/bin/ssh $i "ls /starhome/igate/ " > check_ig.tmp
+
+                                        echo "-----------------------------------------" >> $i"_"$(date +%Y%m%d)".support_log"
+                    echo " Installed services , versions and status" >> $i"_"$(date +%Y%m%d)".support_log"
+                                        echo "-----------------------------------------" >> $i"_"$(date +%Y%m%d)".support_log"
+
+                        for ig in `cat check_ig.tmp`
+                                do
+                                       echo $ig >> $i"_"$(date +%Y%m%d)".support_log"
+                                       echo "-----------" >> $i"_"$(date +%Y%m%d)".support_log"
+                                        /usr/bin/ssh $i "cd /starhome/igate/ ; cd $ig ;cd logs; cat wrapper.log| grep 'IG version' |tail -1| awk -F\| '{print\$4}';cat wrapper.log| grep 'JVM version' |tail -1| awk -F\| '{print\$4}';cat wrapper.log| grep 'JDBC version' |tail -1| awk -F\| '{print\$4}';cat wrapper.log| grep 'DB version' |tail -1| awk -F\] '{print\$2}';echo "STATUS:"; tail -1 wrapper.log" ;echo "ALARMER:" ; tail -1 alarmer.txt">> $i"_"$(date +%Y%m%d)".support_log"
+
+
+                                done
+                        echo "============================================================================================">> $i"_"$(date +%Y%m%d)".support_log"
+done
+
+        else
+        echo "------------------------------------------------"
+                echo "You are root, please run this script as iu"
+                echo "------------------------------------------------"
+fi
+~

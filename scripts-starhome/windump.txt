@@ -1,0 +1,7 @@
+to find out the interfaces:
+
+windump.exe -D
+
+then:
+
+WinDump.exe -i 4 -s 1500 -w d:/ftp/baruch_2.pcap

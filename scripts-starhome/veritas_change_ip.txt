@@ -1,0 +1,43 @@
+Commands for information gathering:
+
+To display cluster group names:
+sudo hagrp –list
+
+alb-vod-gen_gen_sg              dev-cls-1-aps-1
+alb-vod-gen_gen_sg              dev-cls-1-aps-2
+.
+.
+.
+
+
+To display resources of a group:
+sudo  hagrp  -resources alb-vod-gen_gen_sg
+
+alb-vod-gen_gen_ap
+alb-vod-gen_gen_vip
+alb-vod-gen_gen_nic
+
+
+Example of displaying IP configuration for a vip resource (Run before and after the IP change):
+sudo hares -display aut-mob-ovm_gen_vip -attribute ArgListValues
+
+#Resource           Attribute             System          Value
+aut-mob-ovm_gen_vip ArgListValues         dev-cls-1-aps-1 Device        1       bond0   Address 1       10.10.25.127    NetMask 1       255.255.255.0   PrefixLen       1       1000    Options     1       ""      IPOptions       1       ""      IPRouteOptions  1       ""
+aut-mob-ovm_gen_vip ArgListValues         dev-cls-1-aps-2 Device        1       bond0   Address 1       10.10.25.127    NetMask 1       255.255.255.0   PrefixLen       1       1000    Options     1       ""      IPOptions       1       ""      IPRouteOptions  1       ""
+
+
+
+
+The actual commands for the IP change:
+
+Note: Before changing the IP, take the cluster group offline.
+
+
+Make Veritas cluster configuration write enabled:
+sudo haconf -makerw
+
+Modify IP value for the relevant resource:
+sudo hares -modify alb-vod-gen_gen_vip  Address 10.105.10.154
+
+Make Veritas cluster configuration read only
+sudo haconf -dump -makero

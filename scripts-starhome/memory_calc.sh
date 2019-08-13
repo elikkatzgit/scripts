@@ -1,0 +1,1 @@
+sar -r |head -3|tail -1 ; sar -r |tail -1

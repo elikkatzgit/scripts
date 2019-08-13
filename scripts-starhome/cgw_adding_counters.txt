@@ -1,0 +1,17 @@
+collector/cgw154igt@cgw_new
+
+Packages: CreateNew{service}counters
+
+Check for:
+1. customer ID from --> select * from customers
+2. User_name --> Schema User name fo collect from
+3. db_link --> You should creat DB link in the db_links {service}_{country}_{operator}
+4. Country --> 3 characters country
+5. local time or not --> check local system time --> Y,N
+6. group ID --> check in package body code to choose.
+
+EXECUTE
+
+Check if running:
+SPARX_COUNTER_DATA
+EXT_SPARX_TRACE

@@ -1,0 +1,8 @@
+sqlplus -s ig2/ig2@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+select password from prov_users where username='gsoc';
+EOF
+cat gsoc.pass
+rm gsoc.pass

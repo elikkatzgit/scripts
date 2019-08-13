@@ -1,0 +1,1 @@
+update AUT_TMOBL_IPNQQ.IPN_PROFILES set ss7_gprs_reject_flag ='1' where ss7_gprs_reject_flag = '0' and activation_flag='1';

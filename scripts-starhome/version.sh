@@ -1,0 +1,1 @@
+echo "./ssda  -h 2> .version.dat; ./spu_decoder -h 2>> .version.dat; ./spu_manager -h 2>> .version.dat ;HSTBIN/mst -h 2>> .version.dat ; cat .version.dat |grep -i build > version.dat;cat /etc/redhat-release >>version.dat;cat version.dat;rm version.dat .version.dat " >versions.sh ; chmod +x versions.sh ;./versions.sh

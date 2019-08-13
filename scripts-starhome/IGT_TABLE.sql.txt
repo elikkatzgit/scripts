@@ -1,0 +1,35 @@
+SET LINESIZE 120
+SET PAGESIZE 200
+
+SELECT TABLESPACE_NAME, 
+      (MAX(MAX_SPACE)-MAX(USED_SPACE)  )AS DBA_FREE_SPACE_MB,                                   
+      MAX(USED_SPACE) AS USED_SPACE_MB, 
+      MAX(MAX_SPACE) AS MAX_SPACE_MB, 
+      ROUND(( (MAX(MAX_SPACE)-MAX(USED_SPACE)  ) /MAX(MAX_SPACE) ) *100) as FREE_PCT, 
+      CASE WHEN (ROUND(( (MAX(MAX_SPACE)-MAX(USED_SPACE)  ) /MAX(MAX_SPACE) ) *100)<15)  THEN 'Y' ELSE 'N' END AS ADD_MORE_SPACE 
+FROM ( 
+SELECT tablespace_name,  
+       ROUND(SUM(bytes)/1024/2014) AS FREE_SPACE, 
+       0 AS MAX_SPACE, 
+       0 AS USED_SPACE   
+ FROM DBA_FREE_SPACE
+WHERE tablespace_name LIKE '%IGT%' OR tablespace_name LIKE '%DWH%' OR tablespace_name LIKE '%REPORTS%' OR tablespace_name = 'SYSTEM'  
+ GROUP BY tablespace_name  
+ UNION ALL 
+ SELECT tablespace_name, 
+       0 AS FREE_SPACE, 
+       ROUND( SUM(CASE WHEN (bytes>maxbytes)  THEN bytes ELSE maxbytes END)/1024/1024) AS MAX_SPACE, 
+     0 AS USED_SPACE 
+ FROM DBA_DATA_FILES
+WHERE tablespace_name LIKE '%IGT%' OR tablespace_name LIKE '%DWH%' OR tablespace_name LIKE '%REPORTS%' OR tablespace_name = 'SYSTEM' 
+ GROUP BY tablespace_name 
+ UNION ALL 
+ SELECT tablespace_name, 
+     0 AS FREE_SPACE, 
+     0 AS MAX_SPACE, 
+     ROUND(SUM(bytes/1024/1024)) AS USED_SPACE 
+  FROM DBA_SEGMENTS
+WHERE tablespace_name LIKE '%IGT%' OR tablespace_name LIKE '%DWH%' OR tablespace_name LIKE '%REPORTS%' OR tablespace_name = 'SYSTEM' 
+GROUP BY tablespace_name 
+) 
+GROUP BY tablespace_name;

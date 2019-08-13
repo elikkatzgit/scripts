@@ -1,0 +1,67 @@
+vgs
+cat /etc/fstab
+#lvextend -L+5G /dev/Volume00/LogVol11 ; resize2fs /dev/Volume00/LogVol11 ## --> STARHOME
+#lvextend -L+6G /dev/Volume00/LogVol07 ; resize2fs /dev/Volume00/LogVol07 ## --> /software/oracle
+#lvextend -L+5G /dev/Volume00/LogVol03 ; resize2fs /dev/Volume00/LogVol03 ## --> TMP
+#lvextend -L+4G /dev/Volume00/LogVol02 ; resize2fs /dev/Volume00/LogVol02 ## --> VAR
+#resize2fs /dev/Volume00/LogVol11
+
+
+root@rus-mts-3-aps-5:~>% vgs
+
+
+  VG       #PV #LV #SN Attr   VSize   VFree  
+  OraVg1     1   1   0 wz--n-  83.82G   3.82G
+  OraVg2     1   2   0 wz--n- 270.08G  10.08G
+  OraVg3     1   1   0 wz--n- 214.20G  14.20G
+  Volume00   1  17   0 wz--n- 278.34G 153.78G
+
+
+root@rus-mts-3-aps-5:~>% cat /etc/fstab
+
+/dev/Volume00/LogVol00  /                       ext3    defaults,acl        1 1
+#/dev/Volume00/LogVol09  /backup/ora_exp         ext3    defaults,acl        1 2
+/dev/cciss/c0d0p1       /boot                   ext3    defaults,acl        1 2
+devpts                  /dev/pts                devpts  gid=5,mode=620      0 0
+tmpfs                   /dev/shm                tmpfs   size=4g         0 0
+/dev/Volume00/LogVol05  /home                   ext3    defaults,acl        1 2
+/dev/Volume00/LogVol10  /kits                   ext3    defaults,acl        1 2
+/dev/Volume00/LogVol04  /opt                    ext3    defaults,acl        1 2
+/dev/Volume00/LogVol13  /oracle_db              ext3    defaults,acl        1 2
+# Oracle DBF ENT
+#/dev/Volume00/LogVol08  /oracle_db/db1          ext3    defaults,acl        1 2
+# Oracle DBF STD
+#/dev/Volume00/LogVol15  /oracle_db/db1          ext3    defaults,acl        1 2
+proc                    /proc                   proc    defaults            0 0
+/dev/Volume00/LogVol12  /software               ext3    defaults,acl        1 2
+# Oracle Software ENT
+/dev/Volume00/LogVol07  /software/oracle        ext3    defaults,acl        1 2
+# Oracle Software STD
+#/dev/Volume00/LogVol14 /software/oracle                ext3    defaults,acl        1 2
+/dev/Volume00/LogVol11  /starhome               ext3    defaults,acl        1 2
+sysfs                   /sys                    sysfs   defaults            0 0
+/dev/Volume00/LogVol03  /tmp                    ext3    defaults,acl        1 2
+/dev/Volume00/LogVol01  /usr                    ext3    defaults,acl        1 2
+/dev/Volume00/LogVol02  /var                    ext3    defaults,acl        1 2
+/dev/Volume00/LogVol06  swap                    swap    defaults            0 0
+/dev/Volume00/Backup    /backup                 ext3    defaults,acl        1 2
+
+# Added by autostar
+/dev/OraVg1/db1 /oracle_db/db1          ext3    defaults,acl    1 2
+/dev/OraVg2/Ora_Exp     /backup/ora_exp         ext3    defaults,acl    1 2
+/dev/OraVg2/Ora_Online  /backup/ora_online              ext3    defaults,acl    1 2
+/dev/OraVg3/db2 /oracle_db/db2          ext3    defaults,acl    1 2
+
+root@rus-mts-3-aps-5:~>% lvextend -L+50G /dev/Volume00/LogVol11
+
+  Extending logical volume LogVol11 to 113.00 GB
+  Logical volume LogVol11 successfully resized
+
+root@rus-mts-3-aps-5:~>% resize2fs /dev/Volume00/LogVol11
+
+resize2fs 1.39 (29-May-2006)
+Filesystem at /dev/Volume00/LogVol11 is mounted on /starhome; on-line resizing required
+Performing an on-line resize of /dev/Volume00/LogVol11 to 29622272 (4k) blocks.
+The filesystem on /dev/Volume00/LogVol11 is now 29622272 blocks long.
+
+root@rus-mts-3-aps-5:~>% df -h

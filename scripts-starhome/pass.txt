@@ -1,0 +1,115 @@
+#!/bin/bash
+#Password handle by Elik Katz
+show_gsoc=1
+update_gsoc=2
+show_Admin=3
+update_Admin=4
+username=5
+clear
+echo "-------------------------------"
+echo "|Provisioning Password manager|"
+echo "|    V. 1.0  By Elik Katz     |"
+echo "-------------------------------"
+echo ""
+echo ""
+echo "Installed provisioning and schema"
+grep pass /starhome/igateprove/conf/Catalina/localhost/* |grep -v report |awk -F\" '{print$1$4}'
+echo "Please choos schema (CopyPaste username here" ;read prov
+echo "------------------"
+echo "Choose what to do"
+echo "1) show gsoc Password"
+echo "2) reset gsoc password to Starhome1"
+echo "3) show Admin Password"
+echo "4) reset Admin password to administrator"
+echo "5) Show all users and passwords"
+echo "   *********************************"
+echo "You selected:";read choose
+
+if [ "$choose" -eq "$show_gsoc" ] 
+then
+sqlplus -s $prov/$prov@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+select password from prov_users where username='gsoc';
+EOF
+echo "gsoc password:"
+cat gsoc.pass
+rm gsoc.pass
+else
+
+if [ "$choose" -eq "$update_gsoc" ]
+then
+sqlplus -s $prov/$prov@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+update prov_users set password ='8b4e113994dca77ee126f978f903538' where username='gsoc';
+update prov_users set TS_LAST_MODIFIED=sysdate-1 where username like 'gsoc';
+update prov_users set TS_LAST_PASSWORD_ChANGE=sysdate-1 where username like 'gsoc';
+update prov_users set user_status='1' where username like 'gsoc';
+EOF
+echo "gsoc password has been reset to Starhome1"
+rm gsoc.pass
+else
+
+if [ "$choose" -eq "$show_Admin" ] ;
+then
+sqlplus -s $prov/$prov@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+select password from prov_users where username='Admin';
+EOF
+echo "Admin Password:"
+cat gsoc.pass
+rm gsoc.pass
+else
+
+if [ "$choose" -eq "$update_Admin" ] ;
+then
+sqlplus -s $prov/$prov@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+update prov_users set password ='20ceb26807d6bf99fd6f4f0d1ca54d4'where username='Admin';
+update prov_users set TS_LAST_MODIFIED=sysdate-1 where username like 'Admin';
+update prov_users set TS_LAST_PASSWORD_ChANGE=sysdate-1 where username like 'Admin';
+update prov_users set user_status='1' where username like 'Admin';
+EOF
+echo "Admin password has been reset to administrator"
+rm gsoc.pass
+
+else
+
+if [ "$choose" -eq "$username" ] ;
+then
+sqlplus -s $prov/$prov@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+select username, password from prov_users;
+EOF
+echo "All users and passwords:"
+echo "***********************"
+cat gsoc.pass
+rm gsoc.pass
+echo "Enter username to reset password to administrator" ;read name
+
+sqlplus -s $prov/$prov@igt > gsoc.pass << EOF
+set echo off
+set feedback off
+set pagesize 0
+update prov_users set password ='20ceb26807d6bf99fd6f4f0d1ca54d4'where username='$name';
+update prov_users set TS_LAST_MODIFIED=sysdate-1 where username like '$name';
+update prov_users set TS_LAST_PASSWORD_ChANGE=sysdate-1 where username like '$name';
+update prov_users set user_status='1' where username like '$name';
+EOF
+echo "$name password has been reset to administrator"
+rm gsoc.pass
+
+fi
+	fi
+		fi
+			fi
+				fi

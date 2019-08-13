@@ -1,0 +1,35 @@
+iu@ukr-kyi-1-mng-1:/starhome/scripts>% cat DB_subscriber_finder.sh 
+#!/bin/bash
+#subscriber finder by Elik Katz
+echo " "
+echo "Enter MSISDN" ;read msisdn
+echo " "
+echo "Searching"
+sleep 1
+echo -ne '#####                     (33%)\r'
+sleep 2
+echo -ne '#############             (66%)\r'
+sleep 2
+echo -ne '#######################   (100%)\r'
+echo -ne '\n'
+sleep 1
+sqlplus -s  UKR_KIEST_CCLQQ/UKR_KIEST_CCLQQ@igt2 > tmp.tmp << EOF
+set feedback off
+set lines 200
+set head on 
+col msisdn for a12
+col Type for a8
+col ATTEMPTS for 9999
+col AbuSE  for 9999
+col BLOCKED for 9999
+select msisdn as msisdn, dialing_type as Type, NUMBER_OF_CALL_ATTEMPTS as Attempts, NUMBER_OF_ABUSE_CALL_ATTEMPTS as Abuse, NUMBER_OF_BLOCKED_CALLS as Blocked, LAST_CALL_START_TIME as Last_call from ccl_call_attempts where msisdn= '$msisdn';
+
+EOF
+echo "Result:"
+cat tmp.tmp
+echo " "
+echo " "
+echo " "
+sleep 1
+echo "Search finished"
+rm tmp.tmp

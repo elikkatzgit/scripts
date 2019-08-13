@@ -1,0 +1,42 @@
+#!/bin/bash
+
+workfolder='/starhome/igate/data'
+rdfolder='/starhome/igate/data'
+
+maxlus=`grep -h 101010102000000 $workfolder/counter* | awk -F\, 'BEGIN {max=0} $6 > max {max=$6} END {print max}'`
+int1=`grep 101010102000000 $workfolder/counter.dat* | head -1 | awk '{print $2}' | awk -F\, '{print substr($1,4,2)}'`
+int2=`grep 101010102000000 $workfolder/counter.dat* | head -2 | tail -1 | awk '{print $2}' | awk -F\, '{print substr($1,4,2)}'
+`
+if [ $int1 -ne $int2 ] ; then interval=900 ; else interval=3600 ; fi
+max=`expr $maxlus / $interval`
+echo "Max GSM LUs per sec:" $max
+ 
+
+maxlus=`grep -h 101010202000000 $workfolder/counter* | awk -F\, 'BEGIN {max=0} $6 > max {max=$6} END {print max}'`
+int1=`grep 101010202000000 $workfolder/counter.dat* | head -1 | awk '{print $2}' | awk -F\, '{print substr($1,4,2)}'`
+int2=`grep 101010202000000 $workfolder/counter.dat* | head -2 | tail -1 | awk '{print $2}' | awk -F\, '{print substr($1,4,2)}'
+`
+if [ $int1 -ne $int2 ] ; then interval=900 ; else interval=3600 ; fi
+max=`expr $maxlus / $interval`
+echo "Max GPRS LUs per sec:" $max
+
+
+
+*********To check the lic agreement:
+cat /starhome/igate/conf/IPN_services.xml
+
+************To Check unknown VLRs:
+grep -i 'unkwnvlr' edrs.dat | awk -F\; '{print$15}' |sort -u
+
+*********Update user activation when it can not be done over the GUI
+UPDATE SGA_SUBSCRIBER_SFI_B SET SERVICES_ACTIVATION = '99999999999999999999'
+WHERE SERVICES_ACTIVATION is null;
+
+
+
+IG version:
+cat /starhome/igate/logs/wrapper.log  |grep -i "ig version" |tail -1 |awk '{print $12}'
+
+To sum awk:
+
+awk 'BEGIN {total=0} {total=total+$5} END {print"TOTAL:  " total}'

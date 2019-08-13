@@ -1,0 +1,54 @@
+#!/bin/bash
+list=`cat /etc/hosts | grep -v localhost |grep -v ora |grep -v \# |awk '{print$2}'`
+
+if [ "$EUID" != "0" ] && [ "$OSTYPE" == "linux-gnu" ];then
+        for i in $list
+        do
+                        /usr/bin/ssh $i "uname -n; tail -1 /etc/issue; dmidecode | grep DL;echo "Number of CPUs:" ;less /proc/cpuinfo|grep 'core id' |sort |uniq |wc -l; less /proc/meminfo|head -7 ;echo "Last day CPU avg:";sar |head -3 |tail -1 ; sar |tail -1 " > $i"_"$(date +%Y%m%d)".support_log"
+
+                /usr/bin/ssh $i "ls /starhome/igate/ " > check_ig.tmp
+                
+                                        echo "-----------------------------------------" >> $i"_"$(date +%Y%m%d)".support_log"
+                    echo " Installed services , versions and status" >> $i"_"$(date +%Y%m%d)".support_log"
+                                        echo "-----------------------------------------" >> $i"_"$(date +%Y%m%d)".support_log"
+
+                        for ig in `cat check_ig.tmp`
+                                do
+                                       echo $ig >> $i"_"$(date +%Y%m%d)".support_log"
+                                       echo "-----------" >> $i"_"$(date +%Y%m%d)".support_log"
+                                        /usr/bin/ssh $i "cd /starhome/igate/ ; cd $ig ;cd logs; cat wrapper.log| grep 'IG version' |tail -1| awk -F\| '{print\$4}';cat wrapper.log| grep 'JVM version' |tail -1| awk -F\| '{print\$4}';cat wrapper.log| grep 'JDBC version' |tail -1| awk -F\| '{print\$4}';cat wrapper.log| grep 'DB version' |tail -1| awk -F\] '{print\$2}';echo "STATUS:"; tail -1 wrapper.log" >> $i"_"$(date +%Y%m%d)".support_log"
+
+
+                                done
+                        echo "============================================================================================">> $i"_"$(date +%Y%m%d)".support_log"                
+done
+
+        else
+        echo "------------------------------------------------"
+                echo "You are root, please run this script as iu"
+                echo "------------------------------------------------"
+fi
+rm -rf check_ig.tmp
+
+cat *$(date +%Y%m%d)".support_log" > $(date +%Y%m%d)"_summary.log"
+echo "============================================================================================" >> $(date +%Y%m%d)"_summary.log"
+sudo cmviewcl >> $(date +%Y%m%d)"_summary.log"
+echo "============================================================================================" >> $(date +%Y%m%d)"_summary.log"
+sqlplus -s jpn_sbmqq_sparx/jpn_sbmqq_sparx@igt > tmp << EOF
+set feedback off
+select count(*) as NUMBER_OF_SUB_IN_DB  from sga_w_subscriber;
+select count(*) as NUMBER_OF_SUB_IN_ROAMING from sga_w_subscriber where is_roaming='1';
+select count(*) as NUMBER_OF_ACTIBE_CAMPAIGNS from PSMS_CAMPAIGNS where status ='1';
+select sum(counter_delta) as UL_COUNTER_LAST_DAY from ga_w_counters_history where static_id='102050101010000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as VISIT_START_LAST_DAY from ga_w_counters_history where static_id='1011500104010000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as VISIT_END_LAST_DAY from ga_w_counters_history where static_id='1011500104030000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as COUNTRY_CHANGE_LAST_DAY from ga_w_counters_history where static_id='1011500104020000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as VIRTUAL_EVENT_LAST_DAY from ga_w_counters_history where static_id='1011500104040000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as SMS_SENT_LAST_DAY from ga_w_counters_history where static_id='1011500101010002' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as SMS_ACK_RESPOND_LAST_DAY from ga_w_counters_history where static_id='1011500101050000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select sum(counter_delta) as SMS_ACK_FAILED_LAST_DAY from ga_w_counters_history where static_id='1011500101060000' and to_char(ts_last_modified,'yyyymmdd')= to_char(sysdate -1,'yyyymmdd');
+select a.location_group_name , count(b.network_id) as NUMBER_OF_NETWORKS from sga_location_groups a, sga_location_group_entries b where a.location_group_id = b.location_group_id group by a.location_group_name order by a.location_group_name ;
+
+EOF
+cat tmp >> $(date +%Y%m%d)"_summary.log"
+rm tmp

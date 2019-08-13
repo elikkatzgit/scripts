@@ -1,0 +1,32 @@
+@echo off
+@REM WRITTEN BY Elik Katz
+@REM 30/04/2010
+@REM pings telesoft Sigtran servers send SNMP to GSOC NNM
+SET COUNT=0
+SET JONTE=10.80.12.197
+SET CARD2=10.16.6.71
+
+:PING_JONTE
+@REM IF NO PING TO JONTE GOTO FOUND_NO_CONNECTION_JONTE
+
+IF %COUNT%==3 GOTO FOUND_NO_CONNECTION_JONTE
+ping %CARD1% > testip.log
+for /f "skip=2 tokens=2 delims= " %%i in ('find /I "Request timed out" testip.log') do (SET /A COUNT=COUNT+1) & GOTO PINGCARD1
+SET /A COUNT=0
+
+:PINGCARD2
+@REM IF NO PING TO CARD2 GOTO FOUND_NO_CONNECTION_Torcuato
+IF %COUNT%==3 GOTO FOUND_NO_CONNECTION_Torcuato
+ping %CARD2% > testip.log
+for /f "skip=2 tokens=2 delims= " %%i in ('find /I "Request timed out" testip.log') do (SET /A COUNT=COUNT+1) & GOTO PINGCARD2
+
+
+:FOUND_NO_CONNECTION_JONTE
+D:\software\cygwin\bin\bash -x ./usr/local/bin/send_snmp.sh Critical Lost Connection to Jonte Probe 987989  up 10.227.3.51
+
+goto END
+
+:FOUND_NO_CONNECTION_Torcuato
+D:\software\cygwin\bin\bash -x ./usr/local/bin/send_snmp.sh Critical Lost Connection to Torcuato Probe 987989  up 10.227.3.51
+
+:END

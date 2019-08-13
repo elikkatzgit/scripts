@@ -1,0 +1,98 @@
+c7ic C7>
+?	#EDAUD
+?	#l2,DUNA,ASSOC0,150,2664
+ 
+Then wait 30 seconds – at that time a DAUD should be sent,
+ 
+?	#l3,tr
+ 
+See which assoc the DAUD is sent out on
+ 
+If it is still the wrong assoc,  then take the ENABLE_STP out of omni_conf_info on both CEs, and restart OMNI on both CEs, then re-run the test
+ 
+ 
+I’ll try it here too
+ 
+Thanks,
+Matt
+
+
+
+
+
+Ulticom version:
+/etc/swinstall/bin/swversioninfo
+
+----------------------------------------
+
+CCS STF version:
+
+rpm -qi TCAP.5.10.8-1-
+
+=================================
+
+CCS Alarmer change:
+Start ALMSS7 0 0 /home/ss7/bin/almss7
+
+Check versions:
+
+for i in `ls |grep tdr`;do echo "$i ";less $i/logs/wrapper.log|grep "ig2-"|tail -3 |awk -F\| '{print$4}';done
+for i in `ls |grep tdr`;do echo "$i ";less $i/logs/wrapper.log|grep "ig2-"|tail -3 |awk -F\| '{print$4}'|awk -F\: '{print$2}'|awk '{print$1}';done
+
+Modulo:
+
+Checl E1 status:   /usr/net/Adax/qcx/qcxpoll -b0
+
+./qcx_conf -sv -EA -f qcx_conf.0
+
+When ther eis more then 1 card in server
+qcx_conf.0 - should be 0 in device and one the second card should be 4
+
+Check Firmware version : ./hdctest then gver
+
+
+./hdcd -S is the command to get the serials
+
+restart Adax cards:
+
+service qcx stop ; service hdcx stop ; sleep 2 ; service qcx start; service hdcx start
+
+
+sql on TDR DB:
+
+select  a.property_value_id, b.app_property_value_name, b.property_value_description, a.property_value
+from GA_PROPERTY_VALUES_CONF a, GA_PROPERTY_VALUES_def b
+where a.property_value_id = b.property_value_id 
+and a.property_value_id like '47%'
+
+
+
+
+
+
+mkdir /starhome/TLS_run_folder
+mv /home/ansty/run/* /starhome/TLS_run_folder
+rm -r /home/ansty/run
+ln -s /starhome/TLS_run_folder /home/ansty/run
+ln -s /home/ansty/lib /starhome/lib
+
+
+
+
+
+
+
+
+
+
+===========================================================================
+
+HOTT - Hinton Offline Test Tool
+Linux version is available under S:\R&D\QA\Software\HOTT - Version 012a
+./hott -s295 -o0:lsl:10.10.25.51:30004 test.pcap 
+
+·         -s295 : 295 frames per second (fps)
+·         10.10.25.51:30004 : TDR process IP Address and port
+·         test.pcap : pcap file you want to process
+
+Full options and flag description can be viewed by running: ./hott -help

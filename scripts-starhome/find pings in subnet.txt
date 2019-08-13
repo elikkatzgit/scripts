@@ -1,0 +1,3 @@
+#### run check for ping in the subnet #####
+
+for /L %z in (1,1,245) do @ping 10.0.129.%z -w 10 -n 1 |find "Reply"

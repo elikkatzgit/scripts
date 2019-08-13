@@ -1,0 +1,35 @@
+set echo off
+set feedback off
+set pagesize 0
+col network_name for a20
+col actual_registered for 999999
+select nets.NETWORK_NAME, distrib.ACTUAL_REGISTERED
+from gsm_networks nets, ipn_w_actual_distribution distrib, ipn_roaming_distribution ird
+where ird.ACTIVATION_STATUS <> 1
+and distrib.NETWORK_ID=nets.NETWORK_ID 
+and ird.NETWORK_ID=distrib.NETWORK_ID
+order by distrib.ACTUAL_REGISTERED;
+
+
+
+China Unicom                       221
+Amena (ESP)                        222
+Vodafone (PRT)                     241
+Vodafone (PRT)                     241
+Rogers Wireless                    273
+Telcel (MEX)                       327
+Movistar                           383
+Vodafone (GBR)                     422
+Bouygues telecom Car               619
+aibe (FWI)
+
+Omnitel-Vodafone                   821
+Telefonica Celular                 833
+Nucleo                             851
+CTI Movil (PRY)                    857
+Telecom Personal                   935
+Antel (URY)                       1039
+SFR                               1128
+CTI Movil (URY)                   1155
+Cingular Wireless                 2520
+CTI Movil (ARG)                   3100

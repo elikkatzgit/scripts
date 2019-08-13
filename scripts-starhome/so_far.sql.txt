@@ -1,0 +1,12 @@
+
+select substr(''''||lo.sid||','||lo.SERIAL#||'''', 1,10) "SID,SERIAL",
+       substr(lo.username,1,10) "USER",
+       substr(opname,1,40) "OPNAME",
+       round((sofar/decode(totalwork,0,-1,totalwork))*100,2) "% COMPLETE",
+       time_remaining "TIME REMAINING - SECONDS"
+from V$session s,v$session_longops lo
+where s.sid = lo.sid
+and s.serial# = lo.serial#
+and s.username = lo.username
+--and s.status = 'ACTIVE'
+and round((sofar/decode(totalwork,0,-1,totalwork))*100,2) <100;

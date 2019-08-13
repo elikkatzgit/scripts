@@ -1,0 +1,37 @@
+case "$1" in
+  start)
+    # Start daemons.
+    #EXAMPLE $OMNI_HOME/bin/go.omni <OPTIONS >> /dev/tty1 2>&1 &
+    $OMNI_HOME/bin/go.omni -port no > /dev/tty1 2>&1 &
+    tput blink ; tput bold 
+    echo "Starting omnid..."
+    sleep 3 
+    tput sgr0
+    printf "SignalWare Core Invoker ... started \n"
+    ;;
+  stop)
+    # Stop daemons.
+    printf "Terminating SignalWare Core ...\n"
+    Terminate 0
+    tput blink ; tput bold 
+    printf "SignalWare Core ...Terminated\n"
+    tput sgr0
+    ;;
+  restart)
+    tput bold
+    printf "SignalWare Core Invoker is going down for restart ...\nWill come up in 1 minut\n"
+    tput sgr0
+    $0 stop
+    tput blink ; printf "Wainitng 1 minuts..." ; tput sgr0
+    sleep 60
+    $0 start
+    ;;
+  status)
+    #status nrpe
+    printf "Signalware Status :\n";
+    swmml -e DISPLAY-PLATFORM-STATUS ;
+    ;;
+  *)
+    echo "Usage: service omnid  {start|stop|restart|status}"
+    exit 1
+esac

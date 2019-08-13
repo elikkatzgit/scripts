@@ -1,0 +1,10 @@
+SELECT   NVL (s.current_network_id, -900) network_id,
+         prof.distribution_profile_id dist_prof_id, COUNT (*) cnt
+    FROM sga_w_subscriber s, ipn_profiles prof, gsm_countries cnt
+   WHERE s.is_roaming = 1
+     AND cnt.country_name = 'HONG KONG'
+     AND s.current_country = cnt.country_id
+     AND s.ipn_curr_ipn_profile_id = prof.profile_id
+     AND NVL (s.ipn_curr_ipn_profile_id, -999) <> -999
+     AND s.ts_e_last_lu > SYSDATE-(10/24)
+GROUP BY NVL (s.current_network_id, -900), prof.distribution_profile_id;

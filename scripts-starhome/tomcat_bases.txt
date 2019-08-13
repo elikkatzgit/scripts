@@ -1,0 +1,9 @@
+Here are the steps to install an additional TOMCAT_7_BASE:
+1)	Verify that the following rpms are installed:
+a.	tomcat-home
+b.	tomcat-scripts
+c.	tomcat-igateprov
+d.	Tomcat template rpm
+ 
+2)	Run as root: /software/igprove/template/tomcat-igateprov-{Version}/scripts/deployIGprove
+3)	Run as iu: sudo /usr/local/bin/set_tomcat_perm.sh -base /starhome/igprov/baseXXX

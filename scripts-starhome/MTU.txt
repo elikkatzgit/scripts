@@ -1,0 +1,10 @@
+Check MTU configured by: netstat -i
+
+Check if this value is OK by pining to other device near by by : ping -M do -c 4 -s {MTU_VALUE} {IP_ADDRESS}
+
+If ping is OK, then NTU is OK, if not you will get the following: 
+
+
+Try to lower the value but leave it in the higher level possible:
+
+ifconfig eth0 mtu 1400

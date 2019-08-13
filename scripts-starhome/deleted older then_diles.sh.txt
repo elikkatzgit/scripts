@@ -1,0 +1,14 @@
+#### delete files older then 28 days
+#!/bin/bash
+find /cygdrive/g/cdr -mtime +28 -type d -exec rm -rf {} \;
+
+
+
+find /cygdrive/d/users/ -name 'igate-*' -mtime +160 -exec rm -rf {} \;
+find /cygdrive/d/users/ -name 'prov-v*' -mtime +160 -exec rm -rf {} \;
+
+
+
+
+
+find /starhome/igate/probe/for_test_systiem -name '*.ctp' -mtime +7 -exec rm -rf {} \;

@@ -1,0 +1,18 @@
+#Powered by elkatz
+echo "enter gate name nga-mtn-spx" ;read gate
+
+log=/starhome/igate/$gate/conf/jar_check.log
+file=`cat /starhome/igate/$gate/conf/wrapper.conf |grep jar |grep -v "#" |awk -F\/ '{print$2}'`
+rm $log
+for i in $file
+do
+
+if [ ! -f "/starhome/igate/$gate/lib/$i" ]; then
+echo -ne "$i" >>$log ;echo "--> *** no file" >>$log
+fi
+done
+~
+~
+~
+~
+~

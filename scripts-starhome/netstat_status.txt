@@ -1,0 +1,8 @@
+for i in `netstat -r|egrep "bond|eth"|awk '{print$1}'`;
+	do 
+		echo -ne $i
+		if [ `grep $i /etc/sysconfig/network-scripts/route*|wc -l` = '0' ];then
+			echo " ---> Not in files "
+		else
+			echo "--- > `grep $i /etc/sysconfig/network-scripts/route*`"
+	done

@@ -1,0 +1,238 @@
+smem -t -s uss
+pmap -d <pid> | sort -b -n +1 -2
+sar –S –f …
+
+-------------------------------------
+
+backup:
+If you are using HP Data Protector for taking Online or Offline backup of your servers and while taking backup if you are facing “There is no more space available in any of the Detail Catalog files or directories” error in HP Data Protector then use the below steps to resolve the issue.
+
+omni 
+
+1.It seem you need to add the table space in DP.
+2.Open the DP GUI, go to “internal database”.
+3.In internal database click on the “+” sign near usage. Right click Detailed catalog binary files, and select “add detail catalog directory”.
+4.The default selection is %programfiles%\omniback\db40\dcbf “x”.
+X = number off folders starts with 1.
+5.Leave other fields default and click finish.
+
+Now you have added a new folder for binary files.
+
+Then try test backup, this will completed successfully.
+
+---------------------------------------------------
+
+
+User: shdaemon --> Pass: Kde-Maps
+User: igadmin --> Pass: Ask-Me
+User: shuser --> Pass: Rwr-Eudp 
+User: oracle --> Pass: Pat-Sncf
+
+mount -o remount,rw /var
+
+-----------------------------------------------------
+SP version
+
+cat /usr/local/etc/starhome/security/level/*cur
+
+
+---------------------------------------------------
+
+ ls -ltr |grep 201.`date -d '-1 day' '+%m%d'`
+
+
+Core enable
+
+/usr/local/etc/starhome/sbin/core-ctrl.pl
+When asked how many cores to disable - answer "0".
+You will need to reboot for changes to take effect 
+
+Check : service core-boot status
+
+status : lscpu | grep -E '^Thread|^Core|^Socket|^CPU\('
+
+---------------------------------------------------------------
+ig2 dump:
+
+1.	Check process ID : Example ps -ef | grep aut-mob-ovm
+2.	Go to JDK directory /software/java/x64/jdk1.7.0_13/bin
+3.	Run command: ./jmap -dump:format=b,file=/starhome/igate/cheap.bin PID
+
+=====================================================================
+
+disk build:
+
+Make partition from 1024KiB to End Of Disk disregarding its size 
+Provided it is not smaller then 1024KiB  AND for RHEL6 and above ONLY !!!!
+parted /dev/sdb --script mklabel gpt &&  parted /dev/sdb --align optimal --script  -- mkpart primary 1024KiB -1
+
+
+Create an Logical Volume on 100% of the free Volume Group Space
+lvcreate -l100%FREE -n NameOfLV NameOfVG
+
+mkfs - straight forward 
+mkfs -t ext4 /dev/Volume01/TTDB00 
+
+tune    disable fsck after X days limit + disable fsck after X mounts limit + reduce LVM reserved size to 1% :
+tune2fs -c 0 -i 0 -m 1 /dev/Volume01/TTDB00
+---------------------------------------------------------------------------------
+
+unallocated memory:
+
+2.	IPN - pmap –d 43251 | sort -b -n +1 -2 | grep 1016K | wc –l --> 2619
+google suggest stack memory leak, it probably a  thread leak as by running 
+ps h -Led -o pid | sort | uniq -c | sort –n
+You can see PID 43251 have 2638 open processes/threads 
+
+=============================================================================
+
+Threads checking:
+ ps -eLf |awk '{print $2}' | sort |uniq -c |sort –n
+
+/etc/security/limits.conf
+
+============================================================================
+
+
+share screen in Linux -->   printf "screen -x root/scott\n" > /dev/pts/2
+
+
+screen -d -m -S shared
+
+screen -x shared
+
+============================================================================
+Partition truncate:
+alter table GA_W_COUNTERS_HISTORY truncate partition P_17
+
+===========================================================================
+[root@beta ~]# pam_tally2 --user omni --reset=0
+
+--reset=0 makes failure count to 0 after which you can login with omni user.
+
+======================================================================
+
+
+C.I.M - Insight manager
+
+./hpsmhd start
+
+-----------------------------
+
+
+
+TS sftp issue
+mkpasswd --local > /etc/passwd ; mkgroup --local > /etc/group
+mkgroup --local > /etc/group
+
+DISK status:
+
+(Drive status values: 1=other, 2=ok, 3=failed, 4=predictiveFailure)
+(Logical Drive status values: 1=other, 2=ok, 3=failed, 4=unconfigured, 5=recovering, 6=readyForRebuild, 7=rebuilding, 8=wrongDrive, 9=badConnect, 10=overheating, 11=shutdown, 12=expanding, 13=notAvailable, 14=queuedForExpansion))
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Veritas - http://www.datadisk.co.uk/html_docs/veritas/veritas_cluster_cs.htm
+https://sort.symantec.com/public/documents/sfha/6.0.1/aix/productguides/html/sfcfs_admin/apcs02.htm
+
+Where in ADMIN_WAIT status:  hasys -force system_name
+
+
+hagrp -online <group> -sys <sys>
+hagrp -offline <group> -sys <sys>
+hagrp -flush groupw -sys sun1
+# hares -clear app02MOUNT
+
+Main log: /var/VRTSvcs/log/engine_A.log
+
+/etc/lltab
+/etc/llhosts
+
+Method #1
+Clear the hostid for a given disk using "vxdisk clearimport <Veritas-Disk-Access-Name>".
+# vxdisk clearimport <Veritas-Disk-Access-Name>
+Method #2
+Clear the hostid by deporting and re-importing the impacted diskgroup.
+# vxdg -Cf import <diskgroup-name>
+
+---------------------------------------------------------------
+Service Guard cluster:
+
+http://www.unixmantra.com/2014/05/hp-cluster-service-guard-commands.html
+
+load cluster: cmruncl
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+VMWARE
+
+https://192.168.2.65:5480
+
+
+configure vcenter, command, yast
+
+all guests:
+vim-cmd vmsvc/getallvms
+
+find /vfms -name "alpha5.vmx"
+
+/etc/init.d/hostd restart
+Note: In ESXi 4.x, run this command to restart the vpxa agent:
+service vmware-vpxa restart
+To restart all management agents on the host, run the command:
+services.sh restart
+To restart the management agents on an ESX host:
+service mgmt-vmware restart
+service vmware-vpxa restart
+
+
+restart all managment services: services.sh restart
+
++++++++++++++++++++++++++++++++
+hosting
+
+How many disk groups installed (root):
+vxdisk -o alldgs list |grep SthDg |wc -l
+
+How many installed (root):
+cat /etc/VRTSvcs/conf/config/main.cf |grep BlockDevice |wc -l
+
+MOUNT:
+mount 10.20.3.30:/local/nfs-ftp/INBIC /starhome/nfsmount/bicsftp
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+vgs
+
+hpacucli ctrl all show config
+hpacucli ctrl slot=0 pd all show ; ifconfig |head |grep addr: |awk '{print$2}';dmidecode |grep -A4 "System Information" 
+
+Rebuilding status: hpacucli controller slot=0 ld all show status
+
+tcpdump -n -s 0 -i any -C 2 -W 10 -Z root -w /home/omni/Logs/TCPDUMP.pcap &
+(10 files, 2 MB each)
+
+
+Turn on/off UID:
+
+ hpasmcli -s 'SET UID ON'
+
+
+Log4j configuration in provisioning \starhome\igateprov\webapps\subscriberapi\WEB-INF\config\log4j
+
+
+DB resources:
+
+select resource_name, current_utilization,max_utilization,INITIAL_ALLOCATION Allocated from v$resource_limit where resource_name in ('processes','sessions')
+
+select name, description, display_value from v$parameter
+where name like 'mem%'
+
+select * from 
+(select resource_name, current_utilization,max_utilization,INITIAL_ALLOCATION Allocated from v$resource_limit where resource_name in ('processes','sessions')),
+(select name , description, display_value from v$parameter
+where name like 'memory_target%');
+
+Key change
+http://www.linuxproblem.org/art_9.html

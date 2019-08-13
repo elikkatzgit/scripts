@@ -1,0 +1,11 @@
+haconf -makerw
+
+hares -add deu-tdg-mocNic NIC ora_igt_sg && hares -modify deu-tdg-mocNic Device eth3
+hares -add deu-tdg-mocIp IP ora_igt_sg && hares -modify deu-tdg-mocIp Device eth3
+hares -modify deu-tdg-mocIp Address "192.168.1.36" && hares -modify deu-tdg-mocIp NetMask "255.255.255.192"
+hagrp -enableresources ora_igt_sg
+hares -link ora_igt_ap deu-tdg-mocIp && hares -link deu-tdg-mocIp SecOraNic
+
+haconf -dump -makero
+
+

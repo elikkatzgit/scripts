@@ -1,0 +1,27 @@
+#!/bin/bash -x
+#powered by elkatz
+
+ip='193.108.190.136'
+user='NAM03N'
+pass='yY6Tbd5q'
+IPN_folder='/data_export/ipn'
+GLR_folder='/data_export/glr'
+IPN_file='IPN_*.zip'
+GLR_file='GLR_*.zip'
+
+ftp -n -v $ip <<EOF
+user $user $pass
+prompt
+binary
+lcd /home/starhome/ipn
+cd $IPN_folder
+mget $IPN_file
+mdel $IPN_file
+
+lcd /home/starhome/glr
+cd $GLR_folder
+mget $GLR_file
+mdel $GLR_file
+
+bye
+EOF

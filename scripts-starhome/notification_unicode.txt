@@ -1,0 +1,4 @@
+To solve the issue with SMS sent as gibberish, please try to add into SMS.INI ( [NOTIFY]  section) the following:
+
+;Set unicode (USC-2) output buffer byte order (0 - system default, 1 - little endian, 2- big endian)
+UNICODE_BYTE_ORDER=2

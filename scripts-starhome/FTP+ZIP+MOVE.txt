@@ -1,0 +1,30 @@
+@REM Daily reports for SGP-M1 VHE by Elik Katz GSOC
+
+@REM Rename files to add date in the end of file
+
+r: >> Weekly_M1_reports.log
+cd R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports >> Weekly_M1_reports.log
+
+echo wsh.echo date-1 > %temp%\tmp.vbs
+  for /f "tokens=1-3 delims=/" %%a in (
+   'cscript.exe //nologo %temp%\tmp.vbs'
+   ) do (set mm=0%%a& set dd=0%%b& set yr=%%c)
+  del %temp%\tmp.vbs
+
+
+r: >> Weekly_M1_reports.log
+cd R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports >> Weekly_M1_reports.log
+COPY R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\Mobileone_Inbound_Calls.xls Mobileone_Inbound_Calls_%yr%%mm:~-2%%dd:~-2%.xls /Y >> Weekly_M1_reports.log
+del  R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\Mobileone_Inbound_Calls.xls
+COPY R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\Mobileone_Outbound_Calls.xls Mobileone_Outbound_Calls_%yr%%mm:~-2%%dd:~-2%.xls /Y >> Weekly_M1_reports.log
+del  R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\Mobileone_Outbound_Calls.xls
+COPY R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\Mobileone_ICA.xls Mobileone_ICA_%yr%%mm:~-2%%dd:~-2%.xls /Y >> Weekly_M1_reports.log
+del  R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\Mobileone_ICA.xls
+COPY R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\QOS_without_barring.xls QOS_without_barring_%yr%%mm:~-2%%dd:~-2%.xls /Y >> Weekly_M1_reports.log
+del  R:\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\QOS_without_barring.xls
+
+ftp -i -s:FTPCMD.ini 10.26.90.160 >> Weekly_M1_reports.log
+zip -r Weekly_M1_reports.zip *.xls >> Weekly_M1_reports.log
+DEL *.xls >> Weekly_M1_reports.log
+rename Weekly_M1_reports.zip Weekly_M1_reports_%date:~10%%date:~4,2%%date:~7,2%.zip >> Weekly_M1_reports.log
+move /Y *.zip "E:\Business Objects Data\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports\old\" >> Weekly_M1_reports.log

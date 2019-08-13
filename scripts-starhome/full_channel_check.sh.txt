@@ -1,0 +1,36 @@
+#!/bin/bash
+#Check which channels are carrying traffic
+#!/bin/bash
+#Check which channels are carrying traffic
+#Powered by Baruch Ostrovsky
+
+ULON=`tput smul`
+ULOFF=`tput rmul`
+
+rm -rf /home/ansty/run/af_log*
+
+function open_debug
+{
+# Powered by elkatz
+rm -rf /home/ansty/run/af_log_*
+/usr/bin/expect<<EOF
+spawn "/bin/bash"
+expect "dbg>\r"
+send "telnet localhost 3001\r"
+expect "dbg>\r"
+send "debug 2\r"
+expect "dbg>\r"
+send "quit\r"
+expect "\r"
+send "telnet localhost 3001\r"
+expect "dbg>\r"
+send "debug 0\r"
+expect "dbg>\r"
+send "quit\r"
+expect "\r"
+EOF
+}
+
+open_debug > /dev/null 2>&1
+
+./channelcheck  /home/ansty/run/sbmaint.ini /home/ansty/run/ af_log_*

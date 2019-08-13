@@ -1,0 +1,17 @@
+@REM Daily reports for SGP-M1 VHE by Elik Katz GSOC
+
+ftp -v -s:TEST_FTPCMD.ini 10.26.90.160
+
+
+
+TEST_FTPCMD.ini:
+
+ftpuse
+USEFTP
+lcd "E:\Business Objects Data\UserDocs\BCA\Customer\Mobileone\Weekly_send_reports"
+cd /var/tmp/ndivhe/work_ftp
+bin
+mput Mobileone*.xls
+mput QOS*.xls
+ls -ltr
+bye
